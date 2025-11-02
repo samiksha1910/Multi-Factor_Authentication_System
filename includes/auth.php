@@ -165,4 +165,95 @@ if (isset($_GET['logout'])) {
     header("Location: ../public/login.php");
     exit();
 }
+
+/* ------------------ FORGOT PASSWORD HANDLER ------------------ */
+if (isset($_POST['forgot_password'])) {
+    $email = sanitize($_POST['email']);
+
+    // Check if email exists
+    $stmt = $conn->prepare("SELECT id, username FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        echo "<script>alert('No account found with this email.'); window.location.href='../public/forgot_password.php';</script>";
+        exit();
+    }
+
+    $user = $result->fetch_assoc();
+    $stmt->close();
+
+    // Generate OTP for password reset
+    $otp = generateOTP();
+    $_SESSION['otp'] = $otp;
+    $_SESSION['otp_expiry'] = time() + 600; // 10 minutes
+    $_SESSION['reset_user'] = $user;
+
+    // Send email OTP
+    sendEmailOTP($email, $otp);
+    log_action('Password Reset Attempt', "OTP sent to {$email}");
+
+    // Redirect to verify OTP page
+    header("Location: ../public/verify_otp.php?type=reset");
+    exit();
+}
+
+/* ------------------ PASSWORD RESET VERIFICATION ------------------ */
+if (isset($_POST['verify_reset_otp'])) {
+    $enteredOtp = trim($_POST['otp'] ?? '');
+    $savedOtp   = $_SESSION['otp'] ?? '';
+    $expiry     = $_SESSION['otp_expiry'] ?? 0;
+
+    if (time() > $expiry) {
+        echo "<script>alert('OTP expired. Try again.'); window.location.href='../public/forgot_password.php';</script>";
+        exit();
+    }
+
+    if ($enteredOtp == $savedOtp && isset($_SESSION['reset_user'])) {
+        // ✅ Mark OTP verified so reset_password.php works
+        $_SESSION['otp_verified'] = true;
+
+        // ✅ Clear OTP data
+        unset($_SESSION['otp'], $_SESSION['otp_expiry']);
+
+        // OTP valid — allow user to reset password
+        header("Location: ../public/reset_password.php");
+        exit();
+    } else {
+        echo "<script>alert('Invalid OTP. Try again.'); window.location.href='../public/verify_otp.php?type=reset';</script>";
+        exit();
+    }
+}
+
+
+/* ------------------ PASSWORD UPDATE HANDLER ------------------ */
+if (isset($_POST['reset_password'])) {
+    $newPass = $_POST['new_password'];
+    $confirm = $_POST['confirm_password'];
+
+    if ($newPass !== $confirm) {
+        echo "<script>alert('Passwords do not match.'); window.history.back();</script>";
+        exit();
+    }
+
+    if (!isset($_SESSION['reset_user']['id'])) {
+        echo "<script>alert('Session expired. Please try again.'); window.location.href='../public/forgot_password.php';</script>";
+        exit();
+    }
+
+    $userId = $_SESSION['reset_user']['id'];
+    $hashed = password_hash($newPass, PASSWORD_BCRYPT);
+
+    $stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+    $stmt->bind_param("si", $hashed, $userId);
+    $stmt->execute();
+    $stmt->close();
+
+    unset($_SESSION['reset_user']);
+    echo "<script>alert('Password updated successfully!'); window.location.href='../public/login.php';</script>";
+    exit();
+}
+
+
 ?>

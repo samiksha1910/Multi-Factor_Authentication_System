@@ -1,18 +1,4 @@
-<?php 
-// include_once '../includes/functions.php';
-// include('../config/db.php');
-// include('../includes/log_action.php');
-// session_start();
 
-// // ✅ If user already logged in, redirect to dashboard
-// if (isset($_SESSION['user_id'])) {
-//     header("Location: ../dashboard.php");
-//     exit();
-// }
-
-// // ✅ Show success message after registration
-// $registered_success = isset($_GET['registered']) && $_GET['registered'] === 'success';
-?>
 <?php 
 include_once '../includes/functions.php';
 include('../config/db.php');
