@@ -112,19 +112,22 @@ $stmt->close();
     </table>
 
     <div class="form-section">
-        <form method="POST">
-            <label for="status">Update Status:</label>
-            <select name="status" id="status" required>
-                <option value="Pending" <?= $report['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
-                <option value="Reviewed" <?= $report['status'] == 'Reviewed' ? 'selected' : '' ?>>Reviewed</option>
-                <option value="Resolved" <?= $report['status'] == 'Resolved' ? 'selected' : '' ?>>Resolved</option>
-            </select>
 
-            <label for="admin_note">Admin Note:</label>
-            <textarea name="admin_note" id="admin_note" rows="4" placeholder="Enter note here..."><?= htmlspecialchars($report['admin_note']) ?></textarea>
+    <form method="POST" action="update_report.php">
+    <input type="hidden" name="id" value="<?php echo $report['id']; ?>">
+    <label>Status:</label>
+    <select name="status" id="status" required>
+        <option value="pending" <?= ($report['status']=='pending')?'selected':''; ?>>Pending</option>
+<option value="action_taken" <?= ($report['status']=='action_taken')?'selected':''; ?>>Reviewed</option>
+<option value="dismissed" <?= ($report['status']=='dismissed')?'selected':''; ?>>Resolved</option>
+</select>
+    <label>Admin Note:</label>
+    <textarea name="admin_note"><?php echo $report['admin_note']; ?></textarea>
+    <button type="submit" name="update">Update</button>
+</form>
 
-            <button type="submit" class="btn">💾 Save Changes</button>
-        </form>
+
+        
     </div>
 
     <a href="compromise_requests.php" class="btn">⬅ Back to Reports</a>

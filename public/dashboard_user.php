@@ -31,7 +31,7 @@ div{
     <h3>Your links</h3>
     <ul>
       <li><a href="#" onclick="showDenied('Admin permissions required')">Admin Panel (Restricted)</a></li>
-      <li><a href="public_resources.php">Public Resources</a></li>
+      <li><a href="helper.php">Help & Support</a></li>
       <li>
         <form method="POST" action="../includes/request_access.php" onsubmit="return requestAccess(event, 'admin_panel.php')">
           <input type="hidden" name="page" value="admin_panel.php">

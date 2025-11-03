@@ -81,6 +81,7 @@ $displayName = $_SESSION['username']
         <ul>
             <li><a href="../admin/manage_users.php">Manage Users</a></li>
             <li><a href="../admin/system_logs.php">System Logs</a></li>
+            <li><a href="../admin/compromise_requests.php">Report Compromise</a></li>
         </ul>
     </div>
 
