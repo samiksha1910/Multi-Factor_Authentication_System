@@ -1,7 +1,4 @@
-<?php
-// optional: protect or include header
-// include_once '../includes/session_check.php';
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +7,6 @@
   <title>Help & Documentation | Secure Auth</title>
   <link rel="stylesheet" href="../assets/css/help.css">
   <style>
-    /* help.css - simple modern styles */
 :root{
   --bg:#f6fbff;
   --card:#ffffff;
@@ -23,42 +19,165 @@
   --container: 980px;
 }
 
-*{box-sizing:border-box;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-body{margin:0;background:var(--bg);color:#111;line-height:1.5;}
-.container{max-width:var(--container);margin:0 auto;padding:28px;}
+*{
+  box-sizing:border-box;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+body{
+  margin:0;background:var(--bg);
+  color:#111;
+  line-height:1.5;
+}
+.container{
+  max-width:var(--container);
+  margin:0 auto;
+  padding:28px;
+}
 
-.site-header{background:linear-gradient(90deg, #fff 0%, #fbfdff 100%);border-bottom:1px solid rgba(0,0,0,0.04);}
-.site-header .container{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;}
-.brand{font-size:20px;margin:0;color:var(--accent);font-weight:700;}
-.nav a{margin-left:14px;color:#374151;text-decoration:none;font-weight:600;}
-.nav a.active{color:var(--accent);}
+.site-header{
+  background:linear-gradient(90deg, #fff 0%, #fbfdff 100%);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.site-header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 28px;
+}
+.brand{
+  font-size:20px;margin:0;
+  color:var(--accent);
+  font-weight:700;
+}
+ 
+  
+.nav a{
+  margin-left:14px;color:#374151;
+  text-decoration:none;
+  font-weight:600;
+}
+.nav a.active{
+  color:var(--accent);
+}
 
-.main-grid{display:grid;grid-template-columns:1fr 320px;gap:22px;padding:30px 0;}
-@media (max-width:900px){ .main-grid{grid-template-columns:1fr; padding:18px 16px;} }
+.main-grid{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:22px;padding:30px 0;
+}
 
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;}
-.card.wide{grid-column:1/-1;}
-.card h2{margin:0 0 8px 0;font-size:20px;color:#0f172a;}
-.muted{color:var(--muted);margin-bottom:12px;font-size:14px;}
+@media (max-width:900px)
+{ .main-grid
+  {
+    grid-template-columns:1fr;
+   padding:18px 16px;
+  } 
+}
 
-.policy-list{margin:12px 0 0 18px;padding:0;}
-.policy-list li{margin:8px 0;color:#0f172a;}
+.card
+{
+   background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+.card.wide
+{
+  grid-column:1/-1;
+}
+.card h2
+{
+  margin:0 0 8px 0;
+  font-size:20px;
+  color:#0f172a;
+}
+.muted
+{
+  color:var(--muted);
+  margin-bottom:12px;
+  font-size:14px;
+}
 
-.steps{margin:12px 0 0 18px;padding:0;}
-.steps li{margin:10px 0;color:#0f172a;}
+.policy-list
+{
+  margin:12px 0 0 18px;
+  padding:0;
+}
+.policy-list li
+{
+  margin:8px 0;
+  color:#0f172a;
+}
 
-.cta-row{display:flex;gap:10px;margin-top:14px;}
-.btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;border:none;font-weight:700;cursor:pointer;}
-.btn.danger{background:var(--danger);}
+.steps
+{
+  margin:12px 0 0 18px;
+  padding:0;
+}
+.steps li
+{
+  margin:10px 0;
+  color:#0f172a;
+}
 
-.rules{margin:12px 0 0 18px;padding:0;}
-.rules li{margin:8px 0;color:#0f172a;}
-.password-demo{margin-top:10px;padding:10px;background:#f1f5f9;border-radius:8px;font-family:monospace;color:#0f172a;}
+.cta-row
+{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+.btn{
+display:inline-block;
+background:var(--accent);
+color:#fff;
+padding:10px 14px;
+border-radius:8px;
+text-decoration:none;
+border:none;
+font-weight:700;
+cursor:pointer;
+}
+.btn.danger{
+background:var(--danger);
+}
 
-.faq details{margin:10px 0;padding:10px;border-radius:8px;background:#fbfdff;border:1px solid rgba(15,23,42,0.03);}
-.faq summary{cursor:pointer;font-weight:600;}
+.rules{
+margin:12px 0 0 18px;
+padding:0;
+}
+.rules li{
+margin:8px 0;
+color:#0f172a;
+}
+.password-demo{
+margin-top:10px;
+padding:10px;
+background:#f1f5f9;
+border-radius:8px;
+font-family:monospace;
+color:#0f172a;
+}
 
-.site-footer{padding:20px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid rgba(0,0,0,0.04);background:transparent;}
+.faq details{
+margin:10px 0;
+padding:10px;
+border-radius:8px;
+background:#fbfdff;
+border:1px solid rgba(15,23,42,0.03);
+}
+.faq summary{
+cursor:pointer;
+font-weight:600;
+}
+
+.site-footer{
+padding:20px 0;
+text-align:center;
+color:var(--muted);
+font-size:14px;
+border-top:1px solid rgba(0,0,0,0.04);
+background:transparent;
+}
 
   </style>
 </head>
@@ -107,8 +226,6 @@ body{margin:0;background:var(--bg);color:#111;line-height:1.5;}
           <input type="hidden" name="reason" value="User reported compromise via Help page">
           <button class="btn danger" type="submit">Report Account Compromised</button>
         </form>
-
-        <!-- <a class="btn" href="mailto:admin@example.com?subject=Account%20Help">Contact Admin</a> -->
       </div>
     </section>
 

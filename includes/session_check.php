@@ -5,7 +5,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include_once __DIR__ . '/../config/db.php';
 
-// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../public/login.php");
     exit();
@@ -13,7 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Adjust your query to match columns actually in your table
 $stmt = $conn->prepare("SELECT id, username FROM users WHERE id=?");
 
 
@@ -24,12 +22,10 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 
-    // Handle missing keys safely
     $blocked = $user['blocked'] ?? 0;
     $blocked_until = $user['blocked_until'] ?? null;
     $role = $user['role'] ?? 'user';
 
-    // Check if blocked
     if ($blocked == 1) {
         echo "<script>alert('Your account is temporarily blocked.');window.location='../public/login.php';</script>";
         session_destroy();

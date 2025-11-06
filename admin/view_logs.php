@@ -13,8 +13,15 @@ $result = mysqli_query($conn, "SELECT * FROM audit_logs ORDER BY created_at DESC
 <html>
 <head><title>Audit Logs</title>
 <style>
-table { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+table { 
+    border-collapse: collapse; 
+    width: 100%; 
+}
+th, td { 
+    padding: 8px; 
+    border: 1px solid #ddd; 
+    text-align: left; 
+    }
 </style>
 </head>
 <body>

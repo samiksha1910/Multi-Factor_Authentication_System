@@ -1,12 +1,11 @@
 
 <?php
 include_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../vendor/autoload.php'; // PHPMailer support
+require_once __DIR__ . '/../vendor/autoload.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-/* ------------------ SECURITY HELPERS ------------------ */
 
 function sanitize($data) {
     return htmlspecialchars(trim($data));
@@ -21,19 +20,15 @@ function verifyPassword($password, $hash) {
 }
 
 function isStrongPassword($password) {
-    // Min 8 chars, at least 1 lowercase, 1 uppercase, 1 digit, 1 special char
     return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password);
 }
 
-/* ------------------ OTP GENERATOR ------------------ */
 if (!function_exists('generateOTP')) {
     function generateOTP($length = 6) {
-        // Create a 6-digit random number
         return strval(rand(pow(10, $length - 1), pow(10, $length) - 1));
     }
 }
 
-/* ------------------ EMAIL SENDER (PHPMailer) ------------------ */
 function sendEmailOTP($to, $otp, $subject = "OTP Verification") {
     if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
         echo "<p style='color:red;'>❌ PHPMailer not found. Check composer autoload.</p>";
@@ -43,20 +38,17 @@ function sendEmailOTP($to, $otp, $subject = "OTP Verification") {
     try {
         $mail = new PHPMailer(true);
 
-        // SMTP Configuration
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'manjot.kaur0226@gmail.com';
-        $mail->Password = 'zylkhfxikabbxwhv'; // Gmail App Password
+        $mail->Password = 'zylkhfxikabbxwhv'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        // Sender & recipient
         $mail->setFrom('manjot.kaur0226@gmail.com', 'Secure Authentication System');
         $mail->addAddress($to);
 
-        // Email body
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = "

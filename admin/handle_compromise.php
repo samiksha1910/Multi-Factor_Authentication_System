@@ -12,8 +12,6 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
     $action = $_GET['action'];
 
 
-    
-    // Determine the new status
     if ($action === 'approve') {
     $newStatus = 'action_taken';
 } elseif ($action === 'reject') {
@@ -24,7 +22,6 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
         exit();
     }
 
-    // Prepare update query
     $stmt = $conn->prepare("UPDATE compromise_reports SET status = ?, updated_at = NOW() WHERE id = ?");
     $stmt->bind_param("si", $newStatus, $id);
 

@@ -4,19 +4,16 @@ include_once '../config/db.php';
 include_once '../includes/functions.php';
 include_once '../includes/log_action.php';
 
-/* ------------------ HELPER FUNCTION ------------------ */
 function generateOTP($length = 6) {
     return rand(pow(10, $length - 1), pow(10, $length) - 1);
 }
 
-/* ------------------ REGISTRATION HANDLER ------------------ */
 if (isset($_POST['register'])) {
     $username = sanitize($_POST['username']);
     $email    = sanitize($_POST['email']);
     $password = $_POST['password'];
     $role     = $_POST['role'];
 
-    // ✅ Check if email already exists
     $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();
@@ -28,15 +25,12 @@ if (isset($_POST['register'])) {
     }
     $check->close();
 
-    // ✅ Hash password
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    // ✅ Generate OTP
     $otp = generateOTP();
     $_SESSION['otp'] = $otp;
-    $_SESSION['otp_expiry'] = time() + 600; // 10 minutes expiry
+    $_SESSION['otp_expiry'] = time() + 600; 
 
-    // ✅ Temporarily store registration details
     $_SESSION['pending_user'] = [
         'username' => $username,
         'email'    => $email,
@@ -44,18 +38,14 @@ if (isset($_POST['register'])) {
         'role'     => $role
     ];
 
-    // ✅ Send OTP email
     sendEmailOTP($email, $otp);
 
-    // ✅ Log the registration attempt
     log_action('Registration Attempt', "OTP sent to {$email}");
 
-    // ✅ Redirect to OTP verification
     header("Location: ../public/verify_otp.php?type=register");
     exit();
 }
 
-/* ------------------ OTP VERIFICATION HANDLER ------------------ */
 if (isset($_POST['verify_otp'])) {
     $enteredOtp = trim($_POST['otp'] ?? '');
     $savedOtp   = $_SESSION['otp'] ?? '';
@@ -71,11 +61,9 @@ if (isset($_POST['verify_otp'])) {
         exit();
     }
 
-    // ✅ FIXED: Use loose comparison instead of strict
     if ($enteredOtp == $savedOtp) {
         unset($_SESSION['otp'], $_SESSION['otp_expiry']);
 
-        // ✅ Registration OTP verified
         if (isset($_SESSION['pending_user'])) {
             $user = $_SESSION['pending_user'];
 
@@ -91,7 +79,6 @@ if (isset($_POST['verify_otp'])) {
             exit();
         }
 
-        // ✅ Login OTP verified
         if (isset($_SESSION['login_user'])) {
             $user = $_SESSION['login_user'];
 
@@ -117,7 +104,6 @@ if (isset($_POST['verify_otp'])) {
     }
 }
 
-/* ------------------ LOGIN HANDLER ------------------ */
 if (isset($_POST['login'])) {
     $email    = sanitize($_POST['email']);
     $password = $_POST['password'];
@@ -141,10 +127,9 @@ if (isset($_POST['login'])) {
         exit();
     }
 
-    // ✅ Generate and send OTP for login
     $otp = generateOTP();
     $_SESSION['otp'] = $otp;
-    $_SESSION['otp_expiry'] = time() + 600; // 10 minutes
+    $_SESSION['otp_expiry'] = time() + 600; 
     $_SESSION['login_user'] = $user;
 
     sendEmailOTP($email, $otp);
@@ -154,7 +139,6 @@ if (isset($_POST['login'])) {
     exit();
 }
 
-/* ------------------ LOGOUT HANDLER ------------------ */
 if (isset($_GET['logout'])) {
     if (isset($_SESSION['user_id'])) {
         log_action('Logout', 'User logged out.');
@@ -166,11 +150,9 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-/* ------------------ FORGOT PASSWORD HANDLER ------------------ */
 if (isset($_POST['forgot_password'])) {
     $email = sanitize($_POST['email']);
 
-    // Check if email exists
     $stmt = $conn->prepare("SELECT id, username FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -184,22 +166,18 @@ if (isset($_POST['forgot_password'])) {
     $user = $result->fetch_assoc();
     $stmt->close();
 
-    // Generate OTP for password reset
     $otp = generateOTP();
     $_SESSION['otp'] = $otp;
-    $_SESSION['otp_expiry'] = time() + 600; // 10 minutes
+    $_SESSION['otp_expiry'] = time() + 600; 
     $_SESSION['reset_user'] = $user;
 
-    // Send email OTP
     sendEmailOTP($email, $otp);
     log_action('Password Reset Attempt', "OTP sent to {$email}");
 
-    // Redirect to verify OTP page
     header("Location: ../public/verify_otp.php?type=reset");
     exit();
 }
 
-/* ------------------ PASSWORD RESET VERIFICATION ------------------ */
 if (isset($_POST['verify_reset_otp'])) {
     $enteredOtp = trim($_POST['otp'] ?? '');
     $savedOtp   = $_SESSION['otp'] ?? '';
@@ -211,13 +189,10 @@ if (isset($_POST['verify_reset_otp'])) {
     }
 
     if ($enteredOtp == $savedOtp && isset($_SESSION['reset_user'])) {
-        // ✅ Mark OTP verified so reset_password.php works
         $_SESSION['otp_verified'] = true;
 
-        // ✅ Clear OTP data
         unset($_SESSION['otp'], $_SESSION['otp_expiry']);
 
-        // OTP valid — allow user to reset password
         header("Location: ../public/reset_form.php");
         exit();
     } else {
@@ -227,7 +202,6 @@ if (isset($_POST['verify_reset_otp'])) {
 }
 
 
-/* ------------------ PASSWORD UPDATE HANDLER ------------------ */
 if (isset($_POST['reset_password'])) {
     $newPass = $_POST['new_password'];
     $confirm = $_POST['confirm_password'];

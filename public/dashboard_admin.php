@@ -2,13 +2,11 @@
 include_once '../includes/session_check.php';
 include_once '../includes/functions.php';
 
-// ✅ Only allow admin access
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: access_denied.php?reason=Admin%20Area');
     exit();
 }
 
-// ✅ Determine name to show safely
 $displayName = $_SESSION['username'] 
     ?? ($_SESSION['first_name'] ?? 'Admin');
 ?>

@@ -43,12 +43,39 @@ if (isset($_POST['update_status'])) {
 <head>
     <title>Update Report Status</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; background: #f8f9fa; }
-        .container { background: white; padding: 25px; border-radius: 10px; width: 450px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin: auto; }
-        h2 { text-align: center; color: #333; }
-        select, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background: #0056b3; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 30px; 
+            background: #f8f9fa; 
+        }
+        .container { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            width: 450px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            margin: auto; 
+        }
+        h2 { 
+            text-align: center; 
+            color: #333; 
+        }
+        select, button { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 10px; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+        }
+        button { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+        }
+        button:hover { 
+            background: #0056b3; 
+        }
     </style>
 </head>
 <body>

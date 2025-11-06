@@ -4,7 +4,6 @@
 include_once '../config/db.php';
 include_once '../includes/log_action.php';
 
-// Admin check
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../public/access_denied.php");
     exit();
@@ -143,7 +142,6 @@ $result = mysqli_query($conn, "SELECT id, username, email, role, blocked FROM us
             text-decoration: underline;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             table {
                 width: 100%;

@@ -2,7 +2,6 @@
 session_start();
 header('Content-Type: application/json');
 
-// require login
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
     echo json_encode(['success' => false, 'message' => 'Not authenticated.']);
     exit;
@@ -17,29 +16,22 @@ if ($reason === '') {
     exit;
 }
 
-include_once __DIR__ . '/../config/db.php'; // adjust path; expect $conn (mysqli)
-// optional: include_once __DIR__ . '/../includes/log_action.php';
+include_once __DIR__ . '/../config/db.php'; 
 
 $user_id = (int) $_SESSION['user_id'];
 $email = $_SESSION['email'];
 
-// sanitize - prepared statement will handle injection; but strip tags for storage
 $reason_clean = strip_tags($reason);
 
-// insert into DB
 $sql = "INSERT INTO account_reports (user_id, email, reason) VALUES (?, ?, ?)";
 if ($stmt = $conn->prepare($sql)) {
     $stmt->bind_param('iss', $user_id, $email, $reason_clean);
     if ($stmt->execute()) {
         $report_id = $stmt->insert_id;
-        // optional: log_action("User $user_id reported account compromised (report_id: $report_id)");
-        
-        // optional: send email to admin (configure properly)
-        $adminEmail = 'admin@example.com'; // change
+        $adminEmail = 'admin@example.com'; 
         $subject = "New Account Compromised Report (#$report_id)";
         $body = "User ID: $user_id\nEmail: $email\n\nReason:\n$reason_clean\n\nView in admin panel.";
-        // Use mail() only if configured; otherwise integrate PHPMailer/SMTP
-        // @mail($adminEmail, $subject, $body);
+        
 
         echo json_encode(['success' => true, 'message' => 'Report submitted successfully.']);
     } else {
@@ -60,7 +52,6 @@ if ($stmt = $conn->prepare($sql)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        /* Buttons */
 .btn {
   font-weight: 600;
   padding: 10px 18px;
@@ -73,11 +64,10 @@ if ($stmt = $conn->prepare($sql)) {
 .btn-primary-alt { background: #6b46ff; color: #fff; }
 .btn-outline { background: transparent; border: 1px solid #ccc; color:#333; }
 
-/* Modal overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  display: none; /* show via JS */
+  display: none; 
   align-items: center;
   justify-content: center;
   background: rgba(10, 12, 15, 0.4);
@@ -86,7 +76,6 @@ if ($stmt = $conn->prepare($sql)) {
 }
 .modal-overlay[aria-hidden="false"] { display: flex; }
 
-/* Modal card */
 .modal-card {
   width: 100%;
   max-width: 720px;
@@ -114,13 +103,11 @@ if ($stmt = $conn->prepare($sql)) {
     </style>
 </head>
 <body>
-<!-- Buttons -->
 <div class="report-actions">
   <button id="reportBtn" class="btn btn-danger">Report Account Compromised</button>
   <a href="contact_admin.php" class="btn btn-primary-alt">Contact Admin</a>
 </div>
 
-<!-- Modal (hidden by default) -->
 <div id="reportModal" class="modal-overlay" aria-hidden="true">
   <div class="modal-card">
     <h2>Report Account Compromised</h2>
@@ -159,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
   reportBtn.addEventListener('click', openModal);
   cancelBtn.addEventListener('click', closeModal);
 
-  // close when clicking outside card
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
   });

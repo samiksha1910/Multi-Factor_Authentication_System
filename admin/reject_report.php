@@ -14,7 +14,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
-$column = 'report_status'; // adjust if needed
+$column = 'report_status';
 
 $stmt = $conn->prepare("UPDATE compromise_reports SET {$column} = ? WHERE id = ?");
 if (!$stmt) {

@@ -1,7 +1,6 @@
 <?php
 include_once '../config/db.php';
 include_once '../includes/log_action.php';
-// session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../public/access_denied.php");
     exit();
@@ -19,8 +18,7 @@ if (isset($_POST['add_user'])) {
     $stmt->close();
 
     if ($ok) {
-        // logAction($conn, $_SESSION['user_id'] ?? 0, 'Add User', "Admin added user: $email");
-        log_action('Add User', "Admin added user: $email");
+         log_action('Add User', "Admin added user: $email");
         echo "<script>alert('User added successfully!');window.location='manage_users.php';</script>";
         exit();
     } else {

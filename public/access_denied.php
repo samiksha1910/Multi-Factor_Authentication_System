@@ -6,5 +6,4 @@ $reason = isset($_GET['reason']) ? sanitize($_GET['reason']) : 'Restricted by sy
     <p>Your system has restricted this page.</p>
     <p><b>Reason:</b> <?php echo $reason; ?></p>
 </div>
-<!-- <button onclick="window.location.href='dashboard_user.php'">Go Back</button> -->
 </body></html>

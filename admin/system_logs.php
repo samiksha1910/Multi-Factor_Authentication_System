@@ -66,12 +66,10 @@ $result = mysqli_query($conn, "SELECT * FROM audit_logs ORDER BY created_at DESC
             margin-top: 50px;
         }
 
-        /* Scrollable table for large data */
         .table-container {
             overflow-x: auto;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             table {
                 width: 100%;

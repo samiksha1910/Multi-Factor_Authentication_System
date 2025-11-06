@@ -14,7 +14,6 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-// Update action (when admin submits form)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'];
     $note = $_POST['admin_note'];
@@ -30,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 
-// Fetch report details
 $stmt = $conn->prepare("SELECT cr.id, cr.user_id, u.username, u.email, cr.report_reason, cr.status, cr.admin_note, cr.created_at 
                         FROM compromise_reports cr
                         JOIN users u ON cr.user_id = u.id
