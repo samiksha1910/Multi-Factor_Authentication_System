@@ -170,6 +170,7 @@ p {
 <form method="POST" action="../includes/auth.php" onsubmit="return validatePassword();">
     <label>Username:</label> 
     <input type="text" name="username" required><br>
+    
 
     <label>Email:</label> 
     <input type="email" name="email" required><br>
