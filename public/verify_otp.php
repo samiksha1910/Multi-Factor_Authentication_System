@@ -3,7 +3,6 @@
 session_start();
 include_once '../includes/functions.php';
 
-// Prevent direct access
 if (!isset($_SESSION['otp'])) {
     echo "<script>alert('No OTP found. Please start registration or login again.'); window.location.href='login.php';</script>";
     exit();
